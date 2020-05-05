@@ -1,9 +1,11 @@
 # <editor-fold desc="Import Typing">
+import multiprocessing
 from typing import *
 # </editor-fold>
 # <editor-fold desc="Import RX">
 from rx import from_list
-from rx.operators import map, filter, to_list, flat_map
+from rx.scheduler import ThreadPoolScheduler
+from rx.operators import map, filter, to_list, flat_map, subscribe_on, observe_on
 # </editor-fold>
 # <editor-fold desc="Import Other Libraries">
 import os
@@ -11,6 +13,7 @@ import re
 # </editor-fold>
 
 # <editor-fold desc=" Import Own Classes">
+
 from models.Model.Annotation import Annotation
 # </editor-fold>
 
@@ -44,21 +47,26 @@ class AnnotationFileReader:
             annotation_file = open(annotation_file_name, encoding="utf8")
             file_name_annotation_list: List[Tuple[str, str]] = (
                 from_list(annotation_file.readlines())
-                .pipe(map(lambda line: (re.sub("\.\./\.\./data/", "", annotation_file_name), line.strip("\n"))))
+                .pipe(map(
+                    lambda line:
+                    (re.sub("\.\./\.\./data/Annotations/Annotations", "", annotation_file_name), line.strip("\n"))
+                ))
                 .pipe(to_list())
                 .run()
             )
             annotation_file.close()
             return file_name_annotation_list
 
-        image_store: List[Annotation] = (
+        optimal_thread_count = multiprocessing.cpu_count() + 1
+        pool_scheduler = ThreadPoolScheduler(optimal_thread_count)
+        annotation_store: List[Annotation] = (
             from_list(
                 [".ann"]
             )
             .pipe(flat_map(
                 lambda extension:
                 from_list(
-                    _get_file_names("../../data")
+                    _get_file_names("../../data/Annotations/Annotations")
                 )
                 .pipe(filter(
                     lambda annotation_file_name: annotation_file_name.endswith(extension)
@@ -76,5 +84,5 @@ class AnnotationFileReader:
             .pipe(to_list())
             .run()
         )
-        return image_store
+        return annotation_store
     # </editor-fold>
