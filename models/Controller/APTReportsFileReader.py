@@ -24,7 +24,8 @@ from models.Model.APTReport import APTReport
 class APTReportFileReader:
 
     # <editor-fold desc="Constructor">
-    def __init__(self):
+    def __init__(self, base_folder: str):
+        self._base_folder: str = base_folder
         self._apt_report_store: List[APTReport] = self._setup_apt_report_store()
 
     # </editor-fold>
@@ -45,7 +46,7 @@ class APTReportFileReader:
                     output = output + [os.path.join(root, file)]
             return output
 
-        def y(apt_report_file, page_number, apt_report_file_name):
+        def extract_content(apt_report_file, page_number, apt_report_file_name):
             print(apt_report_file_name + "_Page_" + str(page_number))
             return apt_report_file.getPage(page_number).extractText()
 
@@ -58,10 +59,12 @@ class APTReportFileReader:
                         .pipe(map(
                             lambda page_number:
                             (
-                                re.sub("\.\./\.\./data/APTReports/", "", apt_report_file_name)
+                                re.sub(self._base_folder + "/", "", apt_report_file_name)
                                 + "_Page_"
                                 + str(page_number),
-                                y(apt_report_file, page_number, apt_report_file_name)
+                                re.sub(self._base_folder + "/", "", apt_report_file_name),
+                                page_number,
+                                extract_content(apt_report_file, page_number, apt_report_file_name)
                             )
                         ), observe_on(pool_scheduler))
                         .pipe(to_list())
@@ -97,8 +100,10 @@ class APTReportFileReader:
             ))
             .pipe(map(
                 lambda file_name_apt_report_tuple: APTReport(
-                    apt_report_file_name=file_name_apt_report_tuple[0],
-                    apt_report_data=file_name_apt_report_tuple[1]
+                    apt_report_index=file_name_apt_report_tuple[0],
+                    apt_report_file_name=file_name_apt_report_tuple[1],
+                    apt_report_page_number=file_name_apt_report_tuple[2],
+                    apt_report_data=file_name_apt_report_tuple[3]
                 )
             ))
             .pipe(to_list())
