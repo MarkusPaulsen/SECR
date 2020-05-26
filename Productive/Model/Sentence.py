@@ -1,5 +1,6 @@
 from typing import *
 
+
 class Sentence:
     def __init__(self, document_name: str, page_number: int, sentence: str):
         self._document_name: str = document_name
@@ -8,8 +9,13 @@ class Sentence:
         self._relevant: bool = True
         self._words: List[str] = []
         self._term_annotated_words: List[Tuple[str, str]] = []
-        self._effects: List[str] = []
+        self._first_class_effects: List[str] = []
+        self._second_class_effects: List[str] = []
+        self._third_class_effects: List[str] = []
         self._devices: List[str] = []
+
+    def get_sentence(self) -> str:
+        return self._sentence
 
     def get_relevant(self) -> bool:
         return self._relevant
@@ -20,8 +26,14 @@ class Sentence:
     def get_term_annotated_words(self) -> List[Tuple[str, str]]:
         return self._term_annotated_words
 
-    def get_effects(self) -> List[str]:
-        return self._effects
+    def get_first_class_effects(self) -> List[str]:
+        return self._first_class_effects
+
+    def get_second_class_effects(self) -> List[str]:
+        return self._second_class_effects
+
+    def get_third_class_effects(self) -> List[str]:
+        return self._third_class_effects
 
     def get_devices(self) -> List[str]:
         return self._devices
@@ -35,8 +47,14 @@ class Sentence:
     def set_term_annotated_words(self, term_annotated_words: List[str]):
         self._term_annotated_words = term_annotated_words
 
-    def set_effects(self, effects: List[str]):
-        self._effects = effects
+    def set_first_class_effects(self, first_class_effects: List[str]):
+        self._first_class_effects = first_class_effects
+
+    def set_second_class_effects(self, second_class_effects: List[str]):
+        self._second_class_effects = second_class_effects
+
+    def set_third_class_effects(self, third_class_effects: List[str]):
+        self._third_class_effects = third_class_effects
 
     def set_devices(self, devices: List[str]):
         self._devices = devices

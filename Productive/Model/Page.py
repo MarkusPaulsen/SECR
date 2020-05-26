@@ -8,6 +8,7 @@ from nltk.tokenize import sent_tokenize
 from Productive.Model.Sentence import Sentence
 
 
+# noinspection SqlNoDataSourceInspection,SqlResolve
 class Page:
 
     def __init__(self, document_name: str, page_number: int):
@@ -16,6 +17,9 @@ class Page:
         self._document_name: str = document_name
         self._page_number: int = page_number
         self._sentences: List[Sentence] = self._setup_sentences()
+
+    def get_sentences(self) -> List[Sentence]:
+        return self._sentences
 
     def _setup_sentences(self) -> List[Sentence]:
         query = (
