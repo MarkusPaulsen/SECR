@@ -50,7 +50,7 @@ class Sentence:
     def set_words(self, words: List[str]):
         self._words = words
 
-    def set_term_annotated_words(self, term_annotated_words: List[str]):
+    def set_term_annotated_words(self, term_annotated_words: List[Tuple[str, str]]):
         self._term_annotated_words = term_annotated_words
 
     def set_first_class_effects(self, first_class_effects: List[str]):

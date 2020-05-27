@@ -29,7 +29,7 @@ class TermLabelLayer:
         (
             from_list(document.get_sentences())
             .pipe(filter(lambda sentence: sentence.get_relevant()))
-            .subscribe(lambda sentence: sentence.set_words(list(set(sentence.get_sentence().split(" ")))))
+            .subscribe(lambda sentence: sentence.set_words(sentence.get_sentence().split(" ")))
         )
 
     def apply_term_label(self, document: Document):
@@ -57,13 +57,10 @@ class TermLabelLayer:
         return word, label_type
 
     def _apply_term_label_sentence(self, sentence: Sentence):
-        term_annotated_words = (
-            from_list(sentence.get_words())
-            .pipe(map(lambda word: self._classify_term(word)))
-            .pipe(to_list())
-            .run()
-        )
-        sentence.set_term_annotated_words(term_annotated_words=term_annotated_words)
+        output: List[Tuple[str, str]] = []
+        for word in sentence.get_words():
+            output.append(self._classify_term(word))
+        sentence.set_term_annotated_words(term_annotated_words=output)
     # </editor-fold>
 
     # <editor-fold desc="Setup methods">
