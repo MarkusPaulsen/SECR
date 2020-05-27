@@ -1,7 +1,11 @@
+# <editor-fold desc="Import typing">
 from typing import *
+# </editor-fold>
 
 
 class Sentence:
+
+    # <editor-fold desc="Constructor">
     def __init__(self, document_name: str, page_number: int, sentence: str):
         self._document_name: str = document_name
         self._page_number: int = page_number
@@ -13,7 +17,9 @@ class Sentence:
         self._second_class_effects: List[str] = []
         self._third_class_effects: List[str] = []
         self._devices: List[str] = []
+    # </editor-fold>
 
+    # <editor-fold desc="Public interface">
     def get_sentence(self) -> str:
         return self._sentence
 
@@ -58,3 +64,4 @@ class Sentence:
 
     def set_devices(self, devices: List[str]):
         self._devices = devices
+    # </editor-fold>
