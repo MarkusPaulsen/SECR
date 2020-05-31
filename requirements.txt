@@ -1,0 +1,5 @@
+pandas
+simpletransformers
+nltk
+PyPDF2
+rx
