@@ -7,7 +7,9 @@ from typing import *
 from rx import from_list
 from rx.operators import map, filter, to_list
 # </editor-fold>
+# <editor-fold desc="Import Other Libraries">
 import sqlite3
+# </editor-fold>
 
 from Learning.models.Model.APTReport import APTReport
 from Learning.models.Model.Annotation import Annotation
@@ -24,15 +26,12 @@ class DBInjecter:
     def __init__(self):
         self._data_base: Connection = self._setup_data_base()
         self._cursor: Cursor = self._setup_cursor()
-
         self._train_annotation_store: List[Annotation] = self._setup_annotation_store()
         self._dev_annotation_store: List[Annotation] = self._setup_annotation_store()
         self._test_annotation_store: List[Annotation] = self._setup_annotation_store()
-
         self._train_token_store: List[Token] = self._setup_token_store()
         self._dev_token_store: List[Token] = self._setup_token_store()
         self._test_token_store: List[Token] = self._setup_token_store()
-
         self._apt_report_store: List[APTReport] = self._setup_apt_report_store()
 
     # </editor-fold>
@@ -58,24 +57,6 @@ class DBInjecter:
 
     def set_apt_report_store(self, apt_report_store: List[APTReport]):
         self._apt_report_store = apt_report_store
-
-    # </editor-fold>
-
-    # <editor-fold desc="Setup methods">
-    def _setup_data_base(self) -> Connection:
-        return sqlite3.connect('../Model/DB.db')
-
-    def _setup_cursor(self) -> Cursor:
-        return self._data_base.cursor()
-
-    def _setup_annotation_store(self) -> List[Annotation]:
-        return []
-
-    def _setup_token_store(self) -> List[Token]:
-        return []
-
-    def _setup_apt_report_store(self) -> List[APTReport]:
-        return []
 
     # </editor-fold>
 
@@ -241,18 +222,36 @@ class DBInjecter:
         self._data_base.commit()
 
     def db_inject(self):
-        # self.db_inject_term_label_list(source=self._train_annotation_store, table="Train_TermLabel")
-        # self.db_inject_relation_label_list(source=self._train_annotation_store, table="Train_RelationLabel")
-        # self.db_inject_attribute_label_list(source=self._train_annotation_store, table="Train_AttributeLabel")
-        # self.db_inject_term_label_list(source=self._dev_annotation_store, table="Dev_TermLabel")
-        # self.db_inject_relation_label_list(source=self._dev_annotation_store, table="Dev_RelationLabel")
-        # self.db_inject_attribute_label_list(source=self._dev_annotation_store, table="Dev_AttributeLabel")
-        # self.db_inject_term_label_list(source=self._test_annotation_store, table="Test_TermLabel")
-        # self.db_inject_relation_label_list(source=self._test_annotation_store, table="Test_RelationLabel")
-        # self.db_inject_attribute_label_list(source=self._test_annotation_store, table="Test_AttributeLabel")
-        # self.db_inject_token_list(source=self._train_token_store, table="Train_Token")
-        # self.db_inject_token_list(source=self._dev_token_store, table="Dev_Token")
-        # self.db_inject_token_list(source=self._test_token_store, table="Test_Token")
+        self.db_inject_term_label_list(source=self._train_annotation_store, table="Train_TermLabel")
+        self.db_inject_relation_label_list(source=self._train_annotation_store, table="Train_RelationLabel")
+        self.db_inject_attribute_label_list(source=self._train_annotation_store, table="Train_AttributeLabel")
+        self.db_inject_term_label_list(source=self._dev_annotation_store, table="Dev_TermLabel")
+        self.db_inject_relation_label_list(source=self._dev_annotation_store, table="Dev_RelationLabel")
+        self.db_inject_attribute_label_list(source=self._dev_annotation_store, table="Dev_AttributeLabel")
+        self.db_inject_term_label_list(source=self._test_annotation_store, table="Test_TermLabel")
+        self.db_inject_relation_label_list(source=self._test_annotation_store, table="Test_RelationLabel")
+        self.db_inject_attribute_label_list(source=self._test_annotation_store, table="Test_AttributeLabel")
+        self.db_inject_token_list(source=self._train_token_store, table="Train_Token")
+        self.db_inject_token_list(source=self._dev_token_store, table="Dev_Token")
+        self.db_inject_token_list(source=self._test_token_store, table="Test_Token")
         self.db_inject_atp_report_list()
+
+    # </editor-fold>
+
+    # <editor-fold desc="Setup methods">
+    def _setup_data_base(self) -> Connection:
+        return sqlite3.connect('../Model/DB.db')
+
+    def _setup_cursor(self) -> Cursor:
+        return self._data_base.cursor()
+
+    def _setup_annotation_store(self) -> List[Annotation]:
+        return []
+
+    def _setup_token_store(self) -> List[Token]:
+        return []
+
+    def _setup_apt_report_store(self) -> List[APTReport]:
+        return []
 
     # </editor-fold>

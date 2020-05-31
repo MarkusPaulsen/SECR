@@ -32,10 +32,6 @@ class TokenFileReader:
 
     # <editor-fold desc="Setup methods">
 
-    def debug(self, x):
-        y = 0
-        return x
-
     def _setup_token_store(self) -> List[Token]:
 
         def _get_file_names(path) -> List[str]:
@@ -54,8 +50,12 @@ class TokenFileReader:
                 file_name_token = (
                     from_list([(line, index)])
                     .pipe(map(
-                        lambda line:
-                        (re.sub(self._base_folder + "/", "", token_file_name), line[0].strip("\n"), line[1])
+                        lambda line_element:
+                        (
+                            re.sub(self._base_folder + "/", "", token_file_name),
+                            line_element[0].strip("\n"),
+                            line_element[1]
+                        )
                     ))
                     .pipe(map(
                         lambda line_content:

@@ -1,0 +1,2 @@
+- Add here the "relevance_model" folder
+- Add here the "term_label_model" folder

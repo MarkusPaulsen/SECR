@@ -1,0 +1,2 @@
+- Add here the "APTReports" folder
+- Add here the "MalwareTextDB-2.0" folder
